@@ -5,6 +5,8 @@ import com.bookingapp2.bookingapp2.core.utilities.DataResult;
 import com.bookingapp2.bookingapp2.core.utilities.Result;
 import com.bookingapp2.bookingapp2.core.utilities.SuccessResult;
 import com.bookingapp2.bookingapp2.entity.User;
+import com.bookingapp2.bookingapp2.entity.dtos.AddUserDto;
+import com.bookingapp2.bookingapp2.entity.dtos.UpdateUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +25,17 @@ public class UserController {
         this.userService=userService;
     }
 
-    @RequestMapping("/getAll")
+    @GetMapping("/getAll")
     public DataResult<List<User>> getAll(){
 
         return this.userService.getAll();
     }
 
-    @RequestMapping("/getAllSorted")
-    public DataResult<List<User>> getAllSorted(){
-
-        return this.userService.getAllSorted();
-    }
 
     @PostMapping("/addUser")
-    public Result addUser(@RequestBody User user){
+    public Result addUser(@RequestBody AddUserDto addUserDto){
 
-        return this.userService.add(user);
+        return this.userService.add(addUserDto);
     }
 
     @GetMapping("/getUserById")
@@ -56,7 +53,12 @@ public class UserController {
     @DeleteMapping("/deleteUserById/{userId}")
     public Result deleteUserById(@PathVariable long userId){
 
-        this.userService.deleteById(userId);
-        return new SuccessResult();
+        return this.userService.deleteById(userId);
+    }
+
+    @PostMapping("/updateUser")
+    public Result updateUser(@RequestBody UpdateUserDto updateUserDto){
+
+        return userService.update(updateUserDto);
     }
 }

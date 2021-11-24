@@ -10,7 +10,7 @@ public interface VehicleDao extends JpaRepository<Vehicle,Long> {
         @Query("Select vehicleId From Vehicle where numberPlate=:numberPlate")
         long getVehicleIdByNumberPlate(String numberPlate);
 
-        Vehicle getById(long vehicleId);
+        Vehicle getByVehicleId(long vehicleId);
 
 
 }

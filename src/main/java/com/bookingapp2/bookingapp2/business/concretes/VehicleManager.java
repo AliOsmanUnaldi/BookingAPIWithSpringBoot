@@ -37,21 +37,27 @@ public class VehicleManager implements VehicleService {
 
     @Override
     public Result addVehicle(VehicleSeatDto vehicleSeatDto) {
-    //sadece admin kullanır
-        if (userDao.getById(vehicleSeatDto.getUserId()).isAdmin()){
-            Vehicle vehicle=new Vehicle(
-                    vehicleSeatDto.getNumberPlate(),vehicleSeatDto.getDate(),
-                    vehicleSeatDto.getCurrentPlace(),vehicleSeatDto.getDestinationPlace());
+    //only admin
+        if (userDao.getByUserId(vehicleSeatDto.getUserId()).isAdmin()){
 
-            this.vehicleDao.save(vehicle);
+            try {
+                Vehicle vehicle=new Vehicle(
+                        vehicleSeatDto.getNumberPlate(),vehicleSeatDto.getDate(),
+                        vehicleSeatDto.getCurrentPlace(),vehicleSeatDto.getDestinationPlace());
 
-            long vehicleId = getVehicleIdByNumberPlate(vehicleSeatDto.getNumberPlate());
+                this.vehicleDao.save(vehicle);
 
-            addSeatsForVehicle(vehicleSeatDto.getSeatCount(),vehicleId);
+                long vehicleId = getVehicleIdByNumberPlate(vehicleSeatDto.getNumberPlate());
 
-            return new SuccessResult("Başarılı");
+                addSeatsForVehicle(vehicleSeatDto.getSeatCount(),vehicleId);
+
+                return new SuccessResult("Başarılı");
+            }
+           catch (Exception e){
+                return new ErrorResult(false,e.getMessage());
+           }
         }
-        else return new ErrorResult(false,"ADMİN DEĞİLSİNİZ!");
+        else return new ErrorResult(false,"Bu işlemi sadece admin yapabilir!");
     }
 
     public void addSeatsForVehicle(int seatCount,long vehicleId){
@@ -67,12 +73,12 @@ public class VehicleManager implements VehicleService {
 
     @Override
     public Result updateVehicle(UpdateVehicleDto updateVehicleDto) {
-        //sadece admin kullanır
-        if (userDao.getById(updateVehicleDto.getUserId()).isAdmin()){
+        //only admin
+        if (userDao.getByUserId(updateVehicleDto.getUserId()).isAdmin()){
 
             try{
 
-                Vehicle vehicle=vehicleDao.getById(updateVehicleDto.getVehicleId());
+                Vehicle vehicle=vehicleDao.getByVehicleId(updateVehicleDto.getVehicleId());
                 vehicle.setDate(updateVehicleDto.getDate());
                 vehicle.setCurrentPlace(updateVehicleDto.getCurrentPlace());
                 vehicle.setDestinationPlace(updateVehicleDto.getDestinationPlace());
@@ -89,7 +95,7 @@ public class VehicleManager implements VehicleService {
             }
 
         }
-        else return new ErrorResult(false,"ADMİN DEĞİLSİNİZ!");
+        else return new ErrorResult(false,"Bu işlemi sadece admin yapabilir!");
     }
 
     @Override
@@ -101,18 +107,28 @@ public class VehicleManager implements VehicleService {
     @Override
     public Vehicle getVehicleById(long vehicleId) {
 
-        return this.vehicleDao.getById(vehicleId);
+        return this.vehicleDao.getByVehicleId(vehicleId);
     }
 
     @Override
     public Result deleteVehicleById(DeleteVehicleDto deleteVehicleDto) {
-        //sadece admin kullanır
-        if (userDao.getById(deleteVehicleDto.getUserId()).isAdmin()) {
-            deleteSeatsForVehicle(deleteVehicleDto.getVehicleId());
-            this.vehicleDao.deleteById(deleteVehicleDto.getVehicleId());
-            return new SuccessResult("Başarılı");
+        //only admin
+        if (userDao.getByUserId(deleteVehicleDto.getUserId()).isAdmin()) {
+
+            try {
+
+                deleteSeatsForVehicle(deleteVehicleDto.getVehicleId());
+                this.vehicleDao.deleteById(deleteVehicleDto.getVehicleId());
+
+                return new SuccessResult("Başarılı");
+            }
+
+            catch (Exception e){
+                return new ErrorResult(false,e.getMessage());
+            }
+
         }
-        else return new ErrorResult(false,"ADMİN DEĞİLSİNİZ!");
+        else return new ErrorResult(false,"Bu işlemi sadece admin yapabilir!");
     }
 
     public void deleteSeatsForVehicle(long vehicleId) {
@@ -125,6 +141,6 @@ public class VehicleManager implements VehicleService {
 
         return this.seatDao.getSeatsByVehicleId(vehicleId);
     }
-    
+
 
 }

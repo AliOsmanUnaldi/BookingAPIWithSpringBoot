@@ -27,4 +27,11 @@ public class User {
 
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+    public User(String userName, String password, boolean admin) {
+
+        this.userName=userName;
+        this.password=password;
+        this.isAdmin=isAdmin();
+    }
 }
