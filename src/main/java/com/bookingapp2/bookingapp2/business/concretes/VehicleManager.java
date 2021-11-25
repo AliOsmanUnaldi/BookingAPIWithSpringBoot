@@ -5,9 +5,11 @@ import com.bookingapp2.bookingapp2.core.utilities.ErrorResult;
 import com.bookingapp2.bookingapp2.core.utilities.Result;
 import com.bookingapp2.bookingapp2.core.utilities.SuccessResult;
 import com.bookingapp2.bookingapp2.dataAccess.SeatDao;
+import com.bookingapp2.bookingapp2.dataAccess.TicketDao;
 import com.bookingapp2.bookingapp2.dataAccess.UserDao;
 import com.bookingapp2.bookingapp2.dataAccess.VehicleDao;
 import com.bookingapp2.bookingapp2.entity.Seat;
+import com.bookingapp2.bookingapp2.entity.Ticket;
 import com.bookingapp2.bookingapp2.entity.Vehicle;
 import com.bookingapp2.bookingapp2.entity.dtos.DeleteVehicleDto;
 import com.bookingapp2.bookingapp2.entity.dtos.UpdateVehicleDto;
@@ -24,14 +26,16 @@ public class VehicleManager implements VehicleService {
     private VehicleDao vehicleDao;
     private SeatDao seatDao;
     private UserDao userDao;
+    private TicketDao ticketDao;
 
     @Autowired
-    public VehicleManager(VehicleDao vehicleDao, SeatDao seatDao,UserDao userDao){
+    public VehicleManager(VehicleDao vehicleDao, SeatDao seatDao,UserDao userDao,TicketDao ticketDao){
 
         super();
         this.vehicleDao=vehicleDao;
         this.seatDao=seatDao;
         this.userDao=userDao;
+        this.ticketDao=ticketDao;
     }
 
 
@@ -117,10 +121,11 @@ public class VehicleManager implements VehicleService {
 
             try {
 
+                deleteTicketsForVehice(deleteVehicleDto.getVehicleId());
                 deleteSeatsForVehicle(deleteVehicleDto.getVehicleId());
                 this.vehicleDao.deleteById(deleteVehicleDto.getVehicleId());
 
-                return new SuccessResult("Başarılı");
+                return new SuccessResult("Araç silindi.");
             }
 
             catch (Exception e){
@@ -136,10 +141,21 @@ public class VehicleManager implements VehicleService {
             this.seatDao.deleteAll(getSeatsByVehicleId(vehicleId));
     }
 
+    public void deleteTicketsForVehice(long vehicleId){
+
+            this.ticketDao.deleteAll(getTicketsByVehicleId(vehicleId));
+    }
+
     @Override
     public List<Seat> getSeatsByVehicleId(long vehicleId) {
 
         return this.seatDao.getSeatsByVehicleId(vehicleId);
+    }
+
+    @Override
+    public List<Ticket> getTicketsByVehicleId(long vehicleId) {
+
+        return this.ticketDao.getTicketsByVehicleId(vehicleId);
     }
 
 

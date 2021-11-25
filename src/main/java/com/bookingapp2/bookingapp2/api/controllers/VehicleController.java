@@ -2,6 +2,7 @@ package com.bookingapp2.bookingapp2.api.controllers;
 
 import com.bookingapp2.bookingapp2.business.abstracts.VehicleService;
 import com.bookingapp2.bookingapp2.core.utilities.Result;
+import com.bookingapp2.bookingapp2.core.utilities.SuccessResult;
 import com.bookingapp2.bookingapp2.entity.Vehicle;
 import com.bookingapp2.bookingapp2.entity.dtos.DeleteVehicleDto;
 import com.bookingapp2.bookingapp2.entity.dtos.UpdateVehicleDto;
@@ -35,10 +36,11 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/deleteVehicleById/{vehicleId}/{userId}",method = RequestMethod.DELETE)
-    public void deleteVehicleById(@PathVariable("vehicleId") long vehicleId, @PathVariable("userId") long userId){
+    public Result deleteVehicleById(@PathVariable("vehicleId") long vehicleId, @PathVariable("userId") long userId){
 
         DeleteVehicleDto deleteVehicleDto=new DeleteVehicleDto(vehicleId,userId);
-        this.vehicleService.deleteVehicleById(deleteVehicleDto);
+
+        return this.vehicleService.deleteVehicleById(deleteVehicleDto);
     }
 
     @PostMapping("/updateVehicle")

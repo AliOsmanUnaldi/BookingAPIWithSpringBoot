@@ -16,5 +16,6 @@ public interface TicketDao extends JpaRepository<Ticket,Long> {
     @Query("From Ticket where ownerId=:ownerId")
     List<Ticket> getAllByOwnerId(long ownerId);
 
+    List<Ticket> getTicketsByVehicleId(long vehicleId);
 
 }

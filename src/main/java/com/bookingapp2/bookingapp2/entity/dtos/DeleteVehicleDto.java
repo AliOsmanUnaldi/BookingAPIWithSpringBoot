@@ -12,5 +12,4 @@ public class DeleteVehicleDto {
     private long vehicleId;
 
     private long userId;
-
 }
