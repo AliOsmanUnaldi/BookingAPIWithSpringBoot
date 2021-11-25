@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface TicketService {
 
-    Ticket getByTicketId(long ticketId);
+    Ticket getTicketByTicketId(long ticketId);
 
     Result addTicket(AddTicketDto addTicketDto);
 
@@ -20,6 +20,7 @@ public interface TicketService {
     Result deleteTicket(long ticketId);
 
     Result updateTicket(UpdateTicketDto updateTicketDto);
+
 
 
 }

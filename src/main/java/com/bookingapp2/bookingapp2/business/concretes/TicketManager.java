@@ -32,9 +32,9 @@ public class TicketManager implements TicketService {
     }
 
     @Override
-    public Ticket getByTicketId(long ticketId) {
+    public Ticket getTicketByTicketId(long ticketId) {
 
-        return ticketDao.getByTicketId(ticketId);
+        return ticketDao.getTicketByTicketId(ticketId);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class TicketManager implements TicketService {
 
     @Override
     public List<Ticket> getAllByOwnerId(long ownerId) {
-        //return new SuccessDataResult<>((List<Ticket>) this.ticketDao.getAllByOwnerId(ownerId),"Biletleriniz listelendi.");
+
         return ticketDao.getAllByOwnerId(ownerId);
     }
 
@@ -77,13 +77,14 @@ public class TicketManager implements TicketService {
 
 
             try {
-                Ticket ticket = ticketDao.getByTicketId(updateTicketDto.getTicketId());
+
+                Ticket ticket = ticketDao.getTicketByTicketId(updateTicketDto.getTicketId());
                 ticket.setSeatId(updateTicketDto.getSeatId());
                 ticket.setStatus(updateTicketDto.isStatus());
                 ticket.setVehicleId(updateTicketDto.getVehicleId());
                 ticket.setOwnerId(updateTicketDto.getOwnerId());
-
                 ticketDao.save(ticket);
+
                 return new SuccessResult("Bilet güncellendi.");
             }
 

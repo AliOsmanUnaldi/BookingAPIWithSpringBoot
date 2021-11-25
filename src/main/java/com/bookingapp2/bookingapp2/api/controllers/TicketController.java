@@ -45,4 +45,10 @@ public class TicketController {
 
         return ticketService.updateTicket(updateTicketDto);
     }
+
+    @GetMapping("/getTicketByTicketId")
+    public Ticket getTicketByTicketId(@RequestParam long ticketId){
+
+        return ticketService.getTicketByTicketId(ticketId);
+    }
 }

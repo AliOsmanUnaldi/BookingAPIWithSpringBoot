@@ -89,7 +89,7 @@ public class VehicleManager implements VehicleService {
                 vehicle.setNumberPlate(updateVehicleDto.getNumberPlate());
                 vehicleDao.save(vehicle);
 
-                return new SuccessResult("Güncellendi.");
+                return new SuccessResult("Araç Bilgileri Güncellendi.");
 
             }
             catch (Exception e){
